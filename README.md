@@ -13,18 +13,38 @@ npm run preview   # preview the build
 
 ## Routes
 
-| Page | English | Arabic |
-|---|---|---|
-| Home (app landing) | `/` | `/ar` |
-| Bing for Business | `/for-business` | `/ar/for-business` |
+Every page exists in English and Arabic (add `/ar` in front for Arabic, e.g. `/ar/contact`).
 
-The language toggle in the navbar/footer switches to the same page in the other language. `<html dir>` and `lang` switch automatically (RTL for Arabic, Cairo font).
+| Page | Path |
+|---|---|
+| Home (app landing) | `/` |
+| Contact (form → info@binghub.net) | `/contact` |
+| Privacy Policy | `/privacy` |
+| Terms & Conditions | `/terms` |
+| Bing for Business | `/for-business` |
+| Business contact (form → support@binghub.net) | `/for-business/contact` |
+| Business Privacy Policy | `/for-business/privacy` |
+| Business Terms & Conditions | `/for-business/terms` |
+
+The language toggle switches to the same page in the other language. `<html dir>` and `lang` switch automatically (RTL for Arabic, Cairo font).
+
+## Contact forms — one-time setup ⚠️
+The forms are delivered by email through [FormSubmit](https://formsubmit.co) (no backend needed). Configure in `src/data/forms.jsx`.
+1. After deploying, submit each form once (Bing contact and Business contact).
+2. FormSubmit sends an **activation email** to `info@binghub.net` and to `support@binghub.net` — click **Activate Form** in each.
+3. From then on, every submission arrives in the inbox. Visitors see an animated thank-you screen after sending.
+
+## Legal pages
+Privacy Policy and Terms & Conditions for both products, in English and Arabic, live in `src/i18n/legal.jsx`. Any email address in the text becomes a clickable `mailto:` link automatically. **Please have them reviewed by a legal advisor before publishing.**
 
 ## Project structure
 
 ```
 src/
-  i18n/content.jsx        ← ALL text (EN + AR). Edit copy here.
+  i18n/content.jsx        ← page text (EN + AR). Edit copy here.
+  i18n/pages.jsx          ← contact form + legal page UI text
+  i18n/legal.jsx          ← Privacy Policy & Terms (Bing + Business, EN + AR)
+  data/forms.jsx          ← where each contact form is delivered
   i18n/LangContext.jsx   ← language detection from URL, dir/lang handling
   data/assets.jsx         ← image URLs + external links (app stores, portal sign-up, socials)
   components/

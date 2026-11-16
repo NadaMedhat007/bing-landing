@@ -7,7 +7,7 @@ import { links } from '../data/assets';
 import { Reveal } from './Motion';
 
 /** variant "light" (home) or "red" (business). knowUs: list of {label, href|route} */
-export default function Footer({ variant = 'light', knowUs, showBlurb = true, showSocial = false, topId }) {
+export default function Footer({ variant = 'light', product = 'hub', knowUs, showBlurb = true, showSocial = false, topId }) {
   const { t, otherPath, to } = useLang();
   const f = t.footer;
   const linkEl = (it) =>
@@ -38,8 +38,8 @@ export default function Footer({ variant = 'light', knowUs, showBlurb = true, sh
           </div>
           <div className="footer__col">
             <h5>{f.legal}</h5>
-            <a href={links.privacy}>{f.privacy}</a>
-            <a href={links.terms}>{f.terms}</a>
+            <Link to={to(`${product === 'business' ? '/for-business' : ''}/privacy`)}>{f.privacy}</Link>
+            <Link to={to(`${product === 'business' ? '/for-business' : ''}/terms`)}>{f.terms}</Link>
           </div>
           <div className="footer__col">
             <h5>{f.contact}</h5>
@@ -47,7 +47,7 @@ export default function Footer({ variant = 'light', knowUs, showBlurb = true, sh
           </div>
           <div className="footer__col footer__lang">
             <Link to={otherPath}>
-              <Icon name="globe" size={16} /> {t.switchLabel}
+              {t.switchLabel} <Icon name="globe" size={16} />
             </Link>
           </div>
         </Reveal>

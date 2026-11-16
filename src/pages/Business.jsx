@@ -100,7 +100,7 @@ const FeatureIcon = ({ name }) => {
 const dashIcons = ['instant', 'ready', 'confirm', 'grow'];
 
 function Dashboard() {
-  const { t } = useLang();
+  const { t, isRtl: isRtlDash } = useLang();
   const d = t.business.dashboard;
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'center center'] });
@@ -116,13 +116,13 @@ function Dashboard() {
 
         <div className="dashboard__frame-wrap" ref={ref}>
           <Float className="deco deco--dash-bowl" range={14} rotate={-6}>
-            <img src={A.decoBowl} alt="" />
+            <img className="art art--bowl" src={A.decoBowl} alt="" />
           </Float>
           <Float className="deco deco--dash-cup" range={16} rotate={8} duration={5.5} delay={0.6}>
-            <img src={A.decoCup} alt="" />
+            <img className="art art--cup" src={A.decoCup} alt="" />
           </Float>
           <motion.div className="dashboard__frame" style={{ rotateX, scale }}>
-            <img src={A.dashboard} alt="Bing restaurant dashboard" loading="lazy" />
+            <img src={isRtlDash ? A.dashboardAr : A.dashboard} alt="Bing restaurant dashboard" loading="lazy" />
           </motion.div>
         </div>
 
@@ -149,7 +149,7 @@ function Marketing() {
   return (
     <section id="ourservices" className="marketing">
       <Float className="deco deco--mk-bowl" range={12} rotate={5}>
-        <img src={A.decoBowl2} alt="" />
+        <img className="art art--bowl" src={A.decoBowl2} alt="" />
       </Float>
       <div className="container">
         <Reveal as="h2" className="section-title">{m.title}</Reveal>
@@ -195,7 +195,7 @@ function Reservation() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <img src={A.reservationMockup} alt="Bing reservation management dashboard" loading="lazy" />
+            <img src={isRtl ? A.reservationMockupAr : A.reservationMockup} alt="Bing reservation management dashboard" loading="lazy" />
           </motion.div>
         </Reveal>
       </div>
@@ -390,7 +390,7 @@ export default function Business() {
     { label: n.pricing, href: '#pricing' },
     { label: n.faqs, href: '#faqs' },
     { label: n.testimonials, href: '#testimonials' },
-    { label: n.contact, href: links.contactBusiness },
+    { label: n.contact, route: '/for-business/contact' },
   ];
   return (
     <div className="page page--business">
@@ -409,7 +409,7 @@ export default function Business() {
         <Testimonials />
         <Cta />
       </main>
-      <Footer variant="red" topId="main" showBlurb={false} showSocial knowUs={navItems} />
+      <Footer variant="red" product="business" topId="main" showBlurb={false} showSocial knowUs={navItems} />
     </div>
   );
 }

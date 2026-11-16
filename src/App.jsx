@@ -4,13 +4,23 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { LangProvider } from './i18n/LangContext';
 import Home from './pages/Home';
 import Business from './pages/Business';
+import Legal from './pages/Legal';
+import Contact from './pages/Contact';
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
     if (hash) {
-      const el = document.querySelector(hash);
-      if (el) return el.scrollIntoView({ behavior: 'smooth' });
+      // wait for the page to render (page transitions), then scroll to the section
+      let tries = 0;
+      const id = setInterval(() => {
+        const el = document.querySelector(hash);
+        if (el || ++tries > 20) {
+          clearInterval(id);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return () => clearInterval(id);
     }
     window.scrollTo(0, 0);
   }, [pathname, hash]);
@@ -30,10 +40,16 @@ export default function App() {
       <ScrollToTop />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Page><Home /></Page>} />
-          <Route path="/for-business" element={<Page><Business /></Page>} />
-          <Route path="/ar" element={<Page><Home /></Page>} />
-          <Route path="/ar/for-business" element={<Page><Business /></Page>} />
+          {['', '/ar'].map((p) => [
+            <Route key={p + 'home'} path={p || '/'} element={<Page><Home /></Page>} />,
+            <Route key={p + 'contact'} path={`${p}/contact`} element={<Page><Contact product="hub" /></Page>} />,
+            <Route key={p + 'privacy'} path={`${p}/privacy`} element={<Page><Legal product="hub" kind="privacy" /></Page>} />,
+            <Route key={p + 'terms'} path={`${p}/terms`} element={<Page><Legal product="hub" kind="terms" /></Page>} />,
+            <Route key={p + 'biz'} path={`${p}/for-business`} element={<Page><Business /></Page>} />,
+            <Route key={p + 'bizcontact'} path={`${p}/for-business/contact`} element={<Page><Contact product="business" /></Page>} />,
+            <Route key={p + 'bizprivacy'} path={`${p}/for-business/privacy`} element={<Page><Legal product="business" kind="privacy" /></Page>} />,
+            <Route key={p + 'bizterms'} path={`${p}/for-business/terms`} element={<Page><Legal product="business" kind="terms" /></Page>} />,
+          ])}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>
