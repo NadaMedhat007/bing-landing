@@ -148,9 +148,6 @@ function Marketing() {
   const m = t.business.marketing;
   return (
     <section id="ourservices" className="marketing">
-      <Float className="deco deco--mk-bowl" range={12} rotate={5}>
-        <img className="art art--bowl" src={A.decoBowl2} alt="" />
-      </Float>
       <div className="container">
         <Reveal as="h2" className="section-title">{m.title}</Reveal>
         <motion.div className="services__grid" initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} variants={stagger(0.1)}>
